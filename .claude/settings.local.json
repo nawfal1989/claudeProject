@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__playwright",
+      "Bash(npm test:*)",
+      "Bash(npx vitest:*)",
+      "Bash(npm audit:*)",
+      "Bash(npm install:*)",
+      "Bash(grep -r \"from ''ai''\" src/ --include=\"*.ts\" --include=\"*.tsx\" -l)",
+      "Bash(npm ls:*)",
+      "mcp__playwright__browser_navigate"
+    ]
+  }
+}
