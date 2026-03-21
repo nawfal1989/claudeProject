@@ -1,10 +1,19 @@
-name: Init Claude
+name: Claude Code
 
 on:
-  push:
+  issue_comment:
+    types: [created]
+  pull_request:
+    types: [opened, synchronize]
 
 jobs:
-  test:
+  claude:
     runs-on: ubuntu-latest
+
     steps:
-      - run: echo "init"
+      - uses: actions/checkout@v4
+
+      - name: Claude Code Action
+        uses: anthropics/claude-code-action@main
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
