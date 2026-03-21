@@ -1,13 +1,10 @@
-name: Claude
+name: Init Claude
 
 on:
   push:
-    branches: [main]
 
 jobs:
-  claude:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Run Claude
-        run: echo "Claude workflow running"
+      - run: echo "init"
