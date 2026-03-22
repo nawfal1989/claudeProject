@@ -1,24 +1,32 @@
-name: Claude with Custom App
+name: Claude Code
+
 on:
   issue_comment:
     types: [created]
-  # ... other triggers
+  pull_request:
+    types: [opened, synchronize]
 
 jobs:
-  claude-response:
+  claude:
     runs-on: ubuntu-latest
-    steps:
-      # Generate a token from your custom app
-      - name: Generate GitHub App token
-        id: app-token
-        uses: actions/create-github-app-token@v1
-        with:
-          app-id: ${{ secrets.APP_ID }}
-          private-key: ${{ secrets.APP_PRIVATE_KEY }}
 
-      # Use Claude with your custom app's token
-      - uses: anthropics/claude-code-action@v1
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      checks: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Claude Code Action
+        uses: anthropics/claude-code-action@v1
         with:
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          github_token: ${{ steps.app-token.outputs.token }}
-          # ... other configuration
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # other configuration like custom_instructions or allowed_tools
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
