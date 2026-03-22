@@ -10,10 +10,45 @@ jobs:
   claude:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      checks: write
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm install
 
       - name: Claude Code Action
         uses: anthropics/claude-code-action@main
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+
+          custom_instructions: |
+            The project is already set up with all dependencies installed.
+            The server runs at localhost:3000 and logs are in logs.txt.
+            You can query the database using sqlite3 if needed.
+            Use Playwright tools to interact with the app if necessary.
+
+          mcp_config: |
+            {
+              "mcpServers": {
+                "playwright": {
+                  "command": "npx",
+                  "args": [
+                    "@playwright/mcp@latest",
+                    "--allowed-origins",
+                    "localhost:3000;cdn.tailwindcss.com;esm.sh"
+                  ]
+                }
+              }
+            }
+
+          allowed_tools: "Bash(npm:*),Bash(sqlite3:*),mcp__playwright__browser_snapshot,mcp__playwright__browser_click"
+
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
