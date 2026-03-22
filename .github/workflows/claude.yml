@@ -12,6 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Run Claude Code
-        uses: anthropics/claude-code-action@v2.1.81
+        uses: anthropics/claude-code-action@v1
         with:
           api-key: ${{ secrets.ANTHROPIC_API_KEY }}
