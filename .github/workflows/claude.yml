@@ -3,6 +3,9 @@ on:
   issue_comment:
     types: [created]
   # ... other triggers
+  push:
+    branches:
+      - main
 
 jobs:
   claude-response:
