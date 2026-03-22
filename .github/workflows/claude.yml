@@ -10,6 +10,9 @@ jobs:
   claude:
     runs-on: ubuntu-latest
 
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
     permissions:
       contents: write # allow branch creation and commit push
       pull-requests: write # allow PR creation
