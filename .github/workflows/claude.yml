@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write
-      pull-requests: write
-      issues: write
-      checks: write
+      contents: write # allow branch creation and commit push
+      pull-requests: write # allow PR creation
+      issues: write # allow issue comments
+      checks: write # allow CI checks
 
     steps:
       - name: Checkout repository
@@ -28,12 +28,14 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
+          # Claude custom instructions
           custom_instructions: |
             The project is already set up with all dependencies installed.
             The server runs at localhost:3000 and logs are in logs.txt.
             You can query the database using sqlite3 if needed.
             Use Playwright tools to interact with the app if necessary.
 
+          # MCP config for Playwright automation
           mcp_config: |
             {
               "mcpServers": {
@@ -48,8 +50,9 @@ jobs:
               }
             }
 
+          # Tools Claude is allowed to use
           allowed_tools: "Bash(npm:*),Bash(sqlite3:*),mcp__playwright__browser_snapshot,mcp__playwright__browser_click"
 
         env:
+          # Required for Claude API access
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          # optional: CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
