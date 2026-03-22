@@ -3,12 +3,19 @@ name: Claude Code
 on:
   workflow_dispatch:
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   claude:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Run Claude Code
-        uses: anthropics/claude-code-action@v1
+        uses: anthropics/claude-code-action@v2.1.81
         with:
-          api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          trigger_phrase: "@claude"
+          label_trigger: "claude"
+          use_sticky_comment: false
